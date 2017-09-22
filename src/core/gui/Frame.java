@@ -2,6 +2,7 @@ package core.gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import core.Loader;
@@ -20,9 +22,11 @@ public class Frame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static int size;
+	public static double size;
+	private static boolean debug = Loader.debug;
+	public static JTextField imput1;
 	
-	public Frame(){
+	public Frame(){		
 		//Конструктор? Да так веселее, нефиг писать статичный код, конструктор позволит вам купить асбестовую прокладку на стул!
 		super("У меня жопа горит");
 		//Хитрожопый режим декорации
@@ -32,49 +36,81 @@ public class Frame extends JFrame {
 		//стандартные операции
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //создаём первую панель
-        JPanel panel1 = new JPanel();
+        final JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout());      
         //помещаем туда кнопки
-        JButton button1 = new JButton("Кнопка нехуя на работает, так что пишите цифру и жмите ИНТЕР нахуй!");
+        final JButton button1 = new JButton("Вычислить");
         button1.setActionCommand("Button 1 was pressed!");
-        panel1.add(button1);
-        
+        panel1.add(button1);        
         //и текст
         //Внимание! Говнокод!
-        final JTextField imput1 = new JTextField("",15);
+        imput1 = new JTextField("0",15);
         panel1.add(imput1);
-        
-     // Слушатель окончания ввода(копипаста)
+        final JTextArea outputnahui = new JTextArea("Результат", 25, 30);
+        // Шрифт и табуляция
+        outputnahui.setFont(new Font("Dialog", Font.PLAIN, 14));
+        outputnahui.setTabSize(10);
+        //перенос слов
+        outputnahui.setLineWrap(true);
+        outputnahui.setWrapStyleWord(true);
+        panel1.add(outputnahui);
+        // Слушатель окончания ввода(копипаста)
         imput1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Отображение введенного текста(тоже копипаста)
-                JOptionPane.showMessageDialog(Frame.this, "пизда рулю === " + MathHelper.massa + " -Вес дискет"+ MathHelper.v3all + " -Обьем нахуй" + MathHelper.xernia + "Обьем");
-                System.out.println("пизда рулю === " + MathHelper.massa + " -Вес дискет"+ MathHelper.v3all + " -Обьем нахуй" + MathHelper.xernia + "Обьем");
-                e.getActionCommand();
-                size = Integer.parseInt(imput1.getText());
-                MathHelper.calcul();
+            	if(debug==true){
+                    System.out.println("Воод через Enter. Только для отладки");
+                    JOptionPane.showMessageDialog(Frame.this, "пизда рулю === " + MathHelper.massa + " -Вес дискет"+ MathHelper.v3all + " -Обьем нахуй" + MathHelper.xernia + "ШТ");
+                    System.out.println("пизда рулю === " + MathHelper.massa + " -Вес дискет"+ MathHelper.v3all + " -Обьем нахуй" + MathHelper.xernia + " Обьем");
+                    e.getActionCommand();
+                    MathHelper.Init();
+                    if(size != 0 && size > 0){
+                    MathHelper.calcul();
+                    }
+                	}  
+                               
             }
-        });
-        JLabel outputnaxui = new JLabel("пизда рулю === ");
-       
-        outputnaxui.setText("пизда рулю === " + MathHelper.massa + " -Вес дискет"+ MathHelper.v3all + " -Обьем нахуй" + MathHelper.xernia + "Обьем");
-        panel1.add(outputnaxui);
-        JLabel kopirasta = new JLabel("пизда рулю === Студия Минмакс, альфа версия, сори за мат, я очень довно не кодил!");
-        panel1.add(kopirasta);
+        });       
     
-      //опять мой говнокод  
-      //получим размер
-       
-     
-        frame.getContentPane().add(panel1);
-        //frame.getContentPane().add(panel2);
+     //опять мой говнокод  
+       //исходя из копипасты делаем вывод
+        button1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if(debug==true){
+                System.out.println("Кнопка нажата.");
+            	}
+                e.getActionCommand();
+                //первым делом сделаем проверку на ноль, ибо можем получить краш, но чтобы сделать проверку, нужно преобразовать числа...Ой все!
+                //Инициализация и обновление переменных.
+                MathHelper.Init();
+                if(size != 0 && size > 0){
+                	if(debug==true){
+                        System.out.println("size > 0");
+                        MathHelper.calcul();
+                        outputnahui.setText("Количество дискет(ШТ) - " + MathHelper.xernia + " Обьем(М.куб) - " + MathHelper.v3all + "  Масса(кг)" + MathHelper.massa);
+                    	}
+                }
+                
+            }
+        }); 
+        
+     //Авторство и т.д.
+        JLabel name = new JLabel(Loader.name +" version - "+ Loader.version);       
+        panel1.add(name);        
+        JLabel kopirasta = new JLabel("Студия Минмакс, World of MinmaX, Asd1995sse.");
+        panel1.add(kopirasta);
+     //Фрейм, добавление панели, размер окна и видимость.
+        frame.getContentPane().add(panel1);        
         frame.setPreferredSize(new Dimension(666, 666));        
         frame.pack();
         frame.setVisible(true);    
         return;
 	}
 	
-public static int GetSize(){
-	return size;
+public static double GetSize(){
+	if(debug==true){
+        System.out.println("Объем данных - " + size);
+    	}
+	return size = Double.parseDouble(imput1.getText());	
 }
 }
