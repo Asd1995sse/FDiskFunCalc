@@ -17,9 +17,8 @@ public class Loader {
 	//самая важная функция 
 	 public static void main(String []args) {
 		 System.out.println("FDiskFunCalc... Init");
-		 	// calcul();		 
-		new Frame();
-		// System.out.println(Frame.GetSize());
+		 sc.ss();		 			 
+		new Frame();		
 		return;
 		 }
 	

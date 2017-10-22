@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,6 +57,21 @@ public class Frame extends JFrame {
         outputnahui.setLineWrap(true);
         outputnahui.setWrapStyleWord(true);
         panel1.add(outputnahui);
+        //подтверждение закрытия окна!
+        frame.addWindowListener(new WindowAdapter() {     
+        public void windowClosing(WindowEvent event) {
+            Object[] options = { "Да", "Нет!" };
+            int n = JOptionPane
+                    .showOptionDialog(event.getWindow(), "Вы уверены, что хотите выйти?",
+                            "", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, options,
+                            options[0]);
+            if (n == 0) {
+                event.getWindow().setVisible(false);
+                System.exit(0);
+            }
+        }		
+        });
         // Слушатель окончания ввода(копипаста)
         imput1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -70,8 +88,9 @@ public class Frame extends JFrame {
                 	}  
                                
             }
-        });       
-    
+        }); 
+       
+	
      //опять мой говнокод  
        //исходя из копипасты делаем вывод
         button1.addActionListener(new ActionListener() {
